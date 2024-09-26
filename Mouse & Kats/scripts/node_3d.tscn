@@ -1,0 +1,96 @@
+[gd_scene load_steps=10 format=3 uid="uid://d1lxk5cbx63fb"]
+
+[ext_resource type="Script" path="res://scripts/CharacterBody3D.gd" id="1_5jwnu"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4ls1c"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_d3c3g"]
+sky_material = SubResource("ProceduralSkyMaterial_4ls1c")
+
+[sub_resource type="Environment" id="Environment_vxpg7"]
+background_mode = 2
+sky = SubResource("Sky_d3c3g")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vinl5"]
+albedo_color = Color(0.0198, 0.0332, 0.06, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_y3jfe"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_a86m7"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_srlkh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_55p7l"]
+size = Vector3(1, 2, 1)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 8.08254, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 500.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vxpg7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_vinl5")
+mesh = SubResource("BoxMesh_y3jfe")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_a86m7")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(6, 0, 0, 0, 3.5, 0, 0, 0, 6, -5.00616, 2.29622, -0.00645828)
+mesh = SubResource("BoxMesh_y3jfe")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_a86m7")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2)
+mesh = SubResource("BoxMesh_y3jfe")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D3/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_a86m7")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00620484, 0.376271, 0.0167418)
+script = ExtResource("1_5jwnu")
+AIR_DECELERATION = 6.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.13746, 0)
+mesh = SubResource("CapsuleMesh_srlkh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.13746, 0)
+shape = SubResource("BoxShape3D_55p7l")
+
+[node name="CameraNeck" type="Node3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.87814, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/CameraNeck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0245552, 0.0344963, 0.00717545)
+fov = 90.0
+
+[node name="Timers" type="Node3D" parent="CharacterBody3D"]
+
+[node name="JumpBuffer" type="Timer" parent="CharacterBody3D/Timers"]
+wait_time = 0.1
+one_shot = true
+
+[node name="RayCast3D" type="RayCast3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, -1, -1.50996e-07, 0, 1.50996e-07, -1, 0, 2.04541, 0)
